@@ -13,20 +13,14 @@ mongoose.connect('mongodb+srv://db_sps:s3gur1d4d!@clusteryess.kq01m.mongodb.net/
 });
 
 mongoose.connection.on('connected', () => {
-    console.log('Mongoose is connected!!!!');
+    console.log('Mongoose is connected');
 });
-/*mongoose.connect('mongodb+srv://db_sps:s3gur1d4d!@clusteryess.kq01m.mongodb.net/db_sps?retryWrites=true&w=majority');
-mongoose.connection.once('open',function(){
-    console.log('conection has been made');
-}).on('error',function(error){
-    console.log('error is:', error);
-});*/
+
 
 //data parsing
 app.use(express.json());
-//app.use(express.urlencode({extended:false}));
 
-//HTTP requet looger
+//HTTP request looger
 app.use(morgan('tiny'));
 app.use('/servicio/api-notes-app',routes);
 

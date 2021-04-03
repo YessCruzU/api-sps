@@ -6,94 +6,78 @@ const user = require('../model/userPost');
 const notePost = require('../model/notePost')
 
 //Service User
-
-router.get('/users', (req, res) => {  
-    user.find({  })
+router.get('/users', (req, res) => {
+    user.find({})
         .then((data) => {
-            console.log('Data: ', data);
             res.json(data);
-        })
-        .catch((error) => {
-            console.log('error: ', daerrorta);
+        }).catch((error) => {
+            res.status(500).json({ msg: 'Internal server:', error });
         });
 });
 
-router.post('/new-user', (req, res) => {  
-    
+router.post('/new-user', (req, res) => {
     const data = req.body;
- 
     const newUser = new user(data);
-    newUser.save().then(
-        doc =>{
-            console.log(doc);
-            return res.json({
-                msg: 'Success'
-            });
-        }
-    ).catch(err=>{
-        res.status(500).json({ msg: 'Sorry, internal server errors' });
-        console.error(err);
+
+    newUser.save().then(data => {
+        return res.json({ msg: 'Success insert user' });
+    }).catch(error => {
+        return res.status(500).json({ msg: 'Internal server:', error });
+
     })
 
-   });
+});
 
-   router.get('/notes', (req, res) => {  
-    notePost.find({  })
+router.get('/notes', (req, res) => {
+    notePost.find({})
         .then((data) => {
-            console.log('Data: ', data);
-            res.json(data);
+            return res.json(data);
         })
-        .catch((error) => {
-            console.log('error: ', daerrorta);
+        .catch(error => {
+            return res.status(500).json({ msg: 'Internal server:', error });
         });
 });
 
 //Service Notes
+router.post('/new-note', (req, res) => {
 
-   router.post('/new-note', (req, res) => {  
-   
     const data = req.body;
     const newNote = new notePost(data);
-    newNote.save().then(
-        doc =>{
-            return res.json(data);
-            console.log(doc);
-        }
-    ).catch(err=>{
-        res.status(500).json({ msg: 'Sorry, internal server errors' });
-        console.error(err);
+    newNote.save().then(data => {
+        return res.json({ msg: 'Success insert note' });
+    }).catch(error => {
+        return res.status(500).json({ msg: 'Sorry, internal server errors', error });
     })
 
-   });
+});
 
-   router.post('/delete-note', (req, res) => {  
-   
+router.post('/update-note', (req, res) => {
     const data = req.body;
-    const newNote = new notePost(data);
-    console.log(data);
-    console.log(data._id);
 
-    notePost.deleteOne({_id: data._id }, function(err) {
+    notePost.updateOne(
+        data.idNote,
+        data.params
+    ).then((data) => {
+        console.log(data);
+        return res.json({ msg: 'Success update note' });
+    }).catch((err) => {
+        console.log(err);
+        return res.status(500).json({ msg: err });
+    })
+});
+
+router.post('/delete-note', (req, res) => {
+    const data = req.body;
+
+    notePost.deleteOne({ _id: data._id }, function (err) {
         if (!err) {
-            return res.json({ msg: 'Success delete' });
+            return res.json({ msg: 'Success delete note' });
         }
         else {
             return res.status(500).json({ msg: 'Sorry, not exist' });
         }
     });
-
-  /*  notePost.deleteOne({_id: ObjectId(data._id)}).then(
-        doc =>{  
-            console.log('succcss');
-            return res.json(doc);
-          
-        }
-    ).catch(err=>{
-        res.status(500).json({ msg: 'Sorry, internal server errors' });
-        console.error(err);
-    })*/
-
-   });
+});
 
 
 
