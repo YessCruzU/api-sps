@@ -52,7 +52,8 @@ router.post('/new-note', (req, res) => {
 });
 
 router.post('/update-note', (req, res) => {
-    const data = req.body;
+    const data = req.body;  
+    data.params['date'] = Date.now()   
 
     notePost.updateOne(
         data.idNote,
