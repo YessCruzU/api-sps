@@ -5,6 +5,7 @@ const router = express.Router();
 const user = require('../model/userPost');
 const notePost = require('../model/notePost')
 
+
 //Service User
 router.get('/users', (req, res) => {
     user.find({})
