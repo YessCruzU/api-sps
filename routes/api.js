@@ -52,7 +52,7 @@ router.post('/new-note', (req, res) => {
 
 });
 
-router.post('/update-note', (req, res) => {
+router.put('/update-note', (req, res) => {
     const data = req.body;  
     data.params['date'] = Date.now()   
 
